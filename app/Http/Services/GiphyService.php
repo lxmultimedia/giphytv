@@ -11,11 +11,12 @@ class GiphyService
     protected string $baseUrl;
     protected Client $http;
     protected array $headers;
-    protected string $api_key = '5Z6JVD3UrEVigNPIiczeqiavEQavjPo3';
+    protected string $api_key;
 
     public function __construct(Client $client)
     {
         $this->baseUrl = 'https://api.giphy.com/v1/gifs/';
+        $this->api_key = config('app.api_key');
         $this->http = $client;
         $this->headers = [
             'cache-control' => 'no-cache',
