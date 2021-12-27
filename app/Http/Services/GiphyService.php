@@ -2,6 +2,7 @@
 
 namespace App\Http\Services;
 
+use App\Http\Clients\GiphyClient;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 
@@ -13,9 +14,10 @@ class GiphyService
     protected array $headers;
     protected string $api_key;
 
-    public function __construct(Client $client)
+    public function __construct(GiphyClient $client)
     {
-        $this->baseUrl = 'https://api.giphy.com/v1/gifs/';
+        //$this->baseUrl = 'https://api.giphy.com/v1/gifs/';
+        $this->baseUrl = '';
         $this->api_key = config('app.api_key');
         $this->http = $client;
         $this->headers = [

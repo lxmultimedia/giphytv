@@ -40,7 +40,7 @@
         </button>
         @if($selectedMode===1)
             <div class="col-span-3">
-                <x-input class="w-full px-3 py-1" wire:model="searchInput" wire:keydown.debounce="search"
+                <x-input class="w-full px-3 py-1" wire:model="searchInput" wire:keydown.debounce.450ms="search"
                          placeholder="search for something..."
                 ></x-input>
             </div>
