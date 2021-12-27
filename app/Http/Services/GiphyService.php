@@ -8,16 +8,12 @@ use GuzzleHttp\Exception\GuzzleException;
 
 class GiphyService
 {
-
-    protected string $baseUrl;
     protected Client $http;
     protected array $headers;
     protected string $api_key;
 
     public function __construct(GiphyClient $client)
     {
-        //$this->baseUrl = 'https://api.giphy.com/v1/gifs/';
-        $this->baseUrl = '';
         $this->api_key = config('app.api_key');
         $this->http = $client;
         $this->headers = [
@@ -32,10 +28,9 @@ class GiphyService
      */
     public function getRandom(string $uri = null): string|null
     {
-        $full_path = $this->baseUrl;
-        $full_path .= 'random?limit=1&api_key=' . $this->api_key;
+        $api_endpoint = 'random?limit=1&api_key=' . $this->api_key;
 
-        $request = $this->http->get($full_path, [
+        $request = $this->http->get($api_endpoint, [
             'headers' => $this->headers,
             'timeout' => 30,
             'connect_timeout' => true,
@@ -57,10 +52,9 @@ class GiphyService
      */
     public function getBySearch(string $q, $offset): array|null
     {
-        $full_path = $this->baseUrl;
-        $full_path .= 'search?offset=' . $offset . '&limit=1&api_key=' . $this->api_key . '&q=' . $q;
+        $api_endpoint = 'search?offset=' . $offset . '&limit=1&api_key=' . $this->api_key . '&q=' . $q;
 
-        $request = $this->http->get($full_path, [
+        $request = $this->http->get($api_endpoint, [
             'headers' => $this->headers,
             'timeout' => 30,
             'connect_timeout' => true,

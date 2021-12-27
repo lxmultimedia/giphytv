@@ -7,6 +7,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use JsonException;
 use Livewire\Component;
 use App\Http\Services\GiphyService;
 
@@ -14,9 +15,9 @@ use App\Http\Services\GiphyService;
 class GiphyGenerator extends Component
 {
     private ?GiphyService $giService = null;
-    private array $modes = [0 => 'random', 1 => 'search', 2 => 'infinite'];
+    private array $modes = ['random' => 'random', 'search' => 'search', 'infinite' => 'infinite'];
     public string $output = "";
-    public int $selectedMode = 0;
+    public string $selectedMode = 'random';
     public string $searchInput = "";
     public int $paginationCount = 1;
     public bool $loading = true;
@@ -24,27 +25,33 @@ class GiphyGenerator extends Component
 
     protected $listeners = ['reload' => 'startInfinite'];
 
-    public function mount(GiphyService $giService): void
+    public function boot(GiphyService $giService): void
     {
         $this->giService = $giService;
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws JsonException
+     */
+    public function mount(): void
+    {
         $this->output = $this->giService->getRandom();
     }
 
     /**
      * @throws GuzzleException
-     * @throws \JsonException
+     * @throws JsonException
      */
-    public function nextGiphy(GiphyService $giService): void
+    public function nextGiphy(): void
     {
-        $this->giService = $giService;
-
         switch ($this->selectedMode) {
-            case 0:
-            case 2:
+            case 'infinite':
+            case 'random':
                 $this->output = $this->giService->getRandom();
                 break;
-            case 1:
-                $this->search($this->giService);
+            case 'search':
+                $this->search();
                 break;
             default:
                 break;
@@ -53,27 +60,19 @@ class GiphyGenerator extends Component
 
     public function setMode(string $mode): void
     {
-        switch ($mode) {
-            case '0':
-                $this->selectedMode = 0;
-                break;
-            case '1':
-                $this->selectedMode = 1;
-                break;
-            case '2':
-                $this->selectedMode = 2;
-                break;
+        if($mode === 'infinite') {
+            $this->showFlashMessage('Loop started. Interval is 10sec');
         }
+        $this->selectedMode = $this->modes[$mode];
     }
 
     /**
      * @throws GuzzleException
-     * @throws \JsonException
+     * @throws JsonException
      */
-    public function startInfinite(GiphyService $giService): void
+    public function startInfinite(): void
     {
-        $this->giService = $giService;
-        $this->nextGiphy($this->giService);
+        $this->nextGiphy();
     }
 
     public function updated(): void
@@ -84,10 +83,8 @@ class GiphyGenerator extends Component
     /**
      * @throws Exception|GuzzleException
      */
-    public function search(GiphyService $giService): void
+    public function search(): void
     {
-        $this->giService = $giService;
-
         $random_offset = $this->paginationCount > 4999 ? random_int(1, 4999) : random_int(1, $this->paginationCount);
         $gMedia = $this->giService->getBySearch($this->searchInput, $random_offset);
 
@@ -108,7 +105,7 @@ class GiphyGenerator extends Component
      * @param String $msg
      * @return void
      */
-    public function showFlashMessage(String $msg): void
+    public function showFlashMessage(string $msg): void
     {
         $this->showFlash = true;
         flash($msg, 'flashmessage');

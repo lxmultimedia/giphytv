@@ -8,8 +8,8 @@
         @endif
     </div>
     <div class="mt-10 grid grid-cols-3 gap-4" x-data="{}">
-        <button wire:click="setMode(0)" x-on:click="clearInterval(window.infinite);"
-            @class (["flex","space-x-2", "items-center", "justify-center", "text-sans", "bg-yellow-500", "bg-yellow-200" => $selectedMode === 0    , "rounded-md", "p-2", "text-red-800" ])>
+        <button wire:click="setMode('random')" x-on:click="clearInterval(window.infinite);"
+            @class (["flex","space-x-2", "items-center", "justify-center", "text-sans", "bg-yellow-500", "bg-yellow-200" => $selectedMode === 'random'    , "rounded-md", "p-2", "text-red-800" ])>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                  stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -17,8 +17,8 @@
             </svg>
             <span>Random</span>
         </button>
-        <button wire:click="setMode(1)" x-on:click="clearInterval(window.infinite);"
-            @class (["flex","space-x-2", "items-center", "justify-center", "text-sans", "bg-yellow-500", "bg-yellow-200" => $selectedMode === 1    , "rounded-md", "p-2", "text-red-800" ])>
+        <button wire:click="setMode('search')" x-on:click="clearInterval(window.infinite);"
+            @class (["flex","space-x-2", "items-center", "justify-center", "text-sans", "bg-yellow-500", "bg-yellow-200" => $selectedMode === 'search'    , "rounded-md", "p-2", "text-red-800" ])>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                  stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -26,9 +26,9 @@
             </svg>
             <span>Search</span>
         </button>
-        <button wire:click="setMode(2)"
+        <button wire:click="setMode('infinite')"
                 x-on:click="window.infinite = setInterval(() => { window.livewire.emit('reload'); }, 10000);"
-            @class (["flex","space-x-2", "items-center", "justify-center", "text-sans", "bg-yellow-500", "bg-yellow-200" => $selectedMode === 2    , "rounded-md", "p-2", "text-red-800" ])>
+            @class (["flex","space-x-2", "items-center", "justify-center", "text-sans", "bg-yellow-500", "bg-yellow-200" => $selectedMode === 'infinite'    , "rounded-md", "p-2", "text-red-800" ])>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                  stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -36,9 +36,9 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-            <span>Infinite (10s)</span>
+            <span>Infinite</span>
         </button>
-        @if($selectedMode===1)
+        @if($selectedMode==='search')
             <div class="col-span-3">
                 <x-input class="w-full px-3 py-1" wire:model="searchInput" wire:keydown.debounce.450ms="search"
                          placeholder="search for something..."

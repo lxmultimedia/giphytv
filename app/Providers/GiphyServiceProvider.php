@@ -15,10 +15,8 @@ class GiphyServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(GiphyClient::class, function () {
-            return new GiphyClient([
-                                       'base_uri' => 'https://api.giphy.com/v1/gifs/'
-                                   ]);
+        $this->app->singleton(GiphyService::class, function () {
+            return new GiphyService(new GiphyClient(['base_uri' => 'https://api.giphy.com/v1/gifs/']));
         });
     }
 
