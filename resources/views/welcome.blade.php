@@ -7,7 +7,12 @@
     <title>{{ config('app.name') }}</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <script src="{{ mix('js/app.js') }}" defer></script>
+
     @livewireStyles
+
+    <meta name="keywords" content="giphy, random, fun, animated, gif, animation, clip, clips">
+    <meta name="description" content="Try out this Giphy TV!! Search for clips, get random ones or play in a infinite loop...">
+    <link rel="canonical" href="{{url()->current()}}"/>
 </head>
 <body class="antialiased">
 <div
