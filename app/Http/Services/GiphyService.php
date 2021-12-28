@@ -40,7 +40,7 @@ class GiphyService
         $response = (object)json_decode($request->getBody(), false, 512, JSON_THROW_ON_ERROR);
         $status = $response->meta->status;
 
-        if ($response && $status === 200) {
+        if ($response && $status === 200 && $response->data) {
             return $response->data->images->original->url;
         }
             return null;
@@ -50,7 +50,7 @@ class GiphyService
      * @throws GuzzleException
      * @throws \JsonException
      */
-    public function getBySearch(string $q, $offset): array|null
+    public function getBySearch(string $q, $offset = 1): array|null
     {
         $api_endpoint = 'search?offset=' . $offset . '&limit=1&api_key=' . $this->api_key . '&q=' . $q;
 
@@ -61,7 +61,7 @@ class GiphyService
             'http_errors' => true,
         ]);
 
-        $response = (object)json_decode($request->getBody(), false, 512, JSON_THROW_ON_ERROR);
+        $response = (object)json_decode($request->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
         $status = $response->meta->status;
 
         if ($response && $status === 200 && isset($response->data[0])) {
