@@ -11,7 +11,8 @@
     @livewireStyles
 
     <meta name="keywords" content="giphy, random, fun, animated, gif, animation, clip, clips">
-    <meta name="description" content="Try out this Giphy TV!! Search for clips, get random ones or play in a infinite loop...">
+    <meta name="description"
+          content="Try out this Giphy TV!! Search for clips, get random ones or play in a infinite loop...">
     <link rel="canonical" href="{{url()->current()}}"/>
 </head>
 <body class="antialiased">
@@ -44,9 +45,13 @@
 
     </div>
 
-    <div class="flex justify-center text-sans text-sm text-gray-500 mt-20">&copy; 2021 -&nbsp;<a
-            href="https://www.lxmedia.tk" target="_blank" class="underline underline-offset-1 inline-block">LX
-            Multimedia</a></div>
+    <div class="flex flex-col">
+        <div class="flex justify-center text-sans text-sm text-gray-500 mt-20 mb-6">&copy; 2021 -&nbsp;<a
+                href="https://www.lxmedia.tk" target="_blank" class="underline underline-offset-1 inline-block">LX
+                Multimedia</a>
+        </div>
+        <div><img width="200px" src="{{ asset('images/powered_by_giphy.gif') }}"></div>
+    </div>
 </div>
 @livewireScripts
 </body>
