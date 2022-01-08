@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Http\Services\GiphyService;
 use Exception;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Contracts\Foundation\Application;
@@ -9,21 +10,18 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use JsonException;
 use Livewire\Component;
-use App\Http\Services\GiphyService;
-
 
 class GiphyGenerator extends Component
 {
-    private ?GiphyService $giService = null;
-    private array $modes = ['random' => 'random', 'search' => 'search', 'infinite' => 'infinite'];
     public string $output = "";
     public string $selectedMode = 'random';
     public string $searchInput = "";
     public int $paginationCount = 1;
     public bool $loading = true;
     public bool $showFlash = false;
-
     protected $listeners = ['reload' => 'startInfinite'];
+    private ?GiphyService $giService = null;
+    private array $modes = ['random' => 'random', 'search' => 'search', 'infinite' => 'infinite'];
 
     public function boot(GiphyService $giService): void
     {
@@ -37,6 +35,33 @@ class GiphyGenerator extends Component
     public function mount(): void
     {
         $this->output = $this->giService->getRandom();
+    }
+
+    public function setMode(string $mode): void
+    {
+        if ($mode === 'infinite') {
+            $this->showFlashMessage('Loop started. Interval is 10sec');
+        }
+        $this->selectedMode = $this->modes[$mode];
+    }
+
+    /**
+     * @param String $msg
+     * @return void
+     */
+    public function showFlashMessage(string $msg): void
+    {
+        $this->showFlash = true;
+        flash($msg, 'flashmessage');
+    }
+
+    /**
+     * @throws GuzzleException
+     * @throws JsonException
+     */
+    public function startInfinite(): void
+    {
+        $this->nextGiphy();
     }
 
     /**
@@ -58,28 +83,6 @@ class GiphyGenerator extends Component
         }
     }
 
-    public function setMode(string $mode): void
-    {
-        if($mode === 'infinite') {
-            $this->showFlashMessage('Loop started. Interval is 10sec');
-        }
-        $this->selectedMode = $this->modes[$mode];
-    }
-
-    /**
-     * @throws GuzzleException
-     * @throws JsonException
-     */
-    public function startInfinite(): void
-    {
-        $this->nextGiphy();
-    }
-
-    public function updated(): void
-    {
-        $this->showFlashMessage('');
-    }
-
     /**
      * @throws Exception|GuzzleException
      */
@@ -96,18 +99,14 @@ class GiphyGenerator extends Component
         $this->paginationCount = $gMedia[1] - 1;
     }
 
+    public function updated(): void
+    {
+        $this->showFlashMessage('');
+    }
+
     public function render(): Factory|View|Application
     {
         return view('livewire.giphy-generator');
     }
 
-    /**
-     * @param String $msg
-     * @return void
-     */
-    public function showFlashMessage(string $msg): void
-    {
-        $this->showFlash = true;
-        flash($msg, 'flashmessage');
-    }
 }
