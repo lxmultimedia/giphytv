@@ -1,0 +1,33 @@
+version: '3.7'
+ 
+services:
+  web:
+      container_name: php8 # pick a name for the container
+      build:
+        context: docker/php # here is the Docker file for this container
+      init: true # allows sending signals to the PHP process, very helpful to stop process in the middle with Ctrl+C or Cmd+C
+      volumes:
+        - .:/var/www # map the current folder to the container"s filesystem (so PHP scripts are injected to the container)  
+      links:
+        - db   
+      environment:
+        DB_HOST: db
+        DB_DATABASE: ddb
+        DB_USERNAME: docker
+        DB_PASSWORD: docker
+        DB_CONNECTION: mysql
+        XDEBUG_CONFIG: "idekey=PHPSTORM remote_host=192.168.0.178"           
+  db:
+    image: 'mysql'
+    environment:
+        # with mysql
+        MYSQL_DATABASE: ddb
+        MYSQL_USER: docker
+        MYSQL_PASSWORD: docker
+        MYSQL_ROOT_PASSWORD: docker
+        MYSQL_ALLOW_EMPTY_PASSWORD: true
+
+        # with postgres
+        # POSTGRES_DB: dbname
+        # POSTGRES_USER: username
+        # POSTGRES_PASSWORD: p455w0rd
