@@ -4,4 +4,4 @@
 
 Link to [Giphy TV](https://www.giphytv.tk) online.
 
-![Giphy TV Screenshot](https://www.lxmcloud.tk/git/gtv_screen.png "Giphy TV Screenshot")
+![Giphy TV Screenshot](https://www.lxmcloud.tk/giti/gtv_screen.png "Giphy TV Screenshot")
