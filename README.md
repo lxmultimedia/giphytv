@@ -2,6 +2,6 @@
 
 ### Laravel App
 
-Link to [Giphy TV](https://www.giphytv.tk) online.
+Link to [Giphy TV](https://giphy.ozona.ch) online.
 
-![Giphy TV Screenshot](https://www.lxmcloud.tk/giti/gtv_screen.png "Giphy TV Screenshot")
+![Giphy TV Screenshot](https://cloud.ozona.ch/giti/gtv_screen.png "Giphy TV Screenshot")
